@@ -1,11 +1,15 @@
-export async function fetchCars() {
+import { CarProps, FilterProps } from "@/types"
+
+export async function fetchCars(filters: FilterProps) {
+	const { manufacturer, year, fuel, limit, model } = filters
+
 	const headers = {
-		"X-RapidAPI-Key": "deff221cccmshf4e312e29249206p16c738jsna9b1116ac791",
-		"X-RapidAPI-Host": "cars-by-api-ninjas.p.rapidapi.com",
+		"X-RapidAPI-Key": process.env.CAR_INFO_API_KEY,
+		"X-RapidAPI-Host": process.env.CAR_INFO_API_HOST,
 	}
 
 	const response = await fetch(
-		`https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?model=carrera`,
+		`${process.env.NEXT_PUBLIC_CAR_API_ENDPOINT}/cars?make=${manufacturer}&year=${year}&model=${model}&limit=${limit}&fuel_type=${fuel}`,
 		{
 			headers: headers,
 		}
@@ -28,4 +32,27 @@ export const calculateCarRent = (city_mpg: number, year: number) => {
 	const rentalRatePerDay = basePricePerDay + mileageRate + ageRate
 
 	return rentalRatePerDay.toFixed(0)
+}
+
+export const generateCarImgUrl = (car: CarProps, angle?: string) => {
+	// const url = new URL("https://cdn.imagin.studio/getimage")
+	const url = new URL(process.env.NEXT_PUBLIC_CAR_IMG_API_ENDPOINT)
+	const { make, year, model } = car
+
+	url.searchParams.append("customer", process.env.NEXT_PUBLIC_CAR_IMG_API_KEY)
+	url.searchParams.append("make", make)
+	url.searchParams.append("modelFamily", model.split(" ")[0])
+	url.searchParams.append("zoomType", "fullscreen")
+	url.searchParams.append("modelYear", `${year}`)
+	url.searchParams.append("angle", `${angle}`)
+
+	return `${url}`
+}
+
+export const updateSearchParams = (type: string, value: string) => {
+	const searchParams = new URLSearchParams(window.location.search)
+	searchParams.set(type, value)
+	const newPathname = `${window.location.pathname}?${searchParams.toString()}`
+
+	return newPathname
 }

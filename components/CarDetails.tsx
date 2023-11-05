@@ -1,6 +1,7 @@
 "use client"
 
 import { CarProps } from "@/types"
+import { generateCarImgUrl } from "@/utils"
 import { Dialog, Transition } from "@headlessui/react"
 import Image from "next/image"
 import { Fragment } from "react"
@@ -57,7 +58,7 @@ const CarDetails = ({ isOpen, closeModal, car }: CarDetailsProps) => {
 									<div className="flex-1 flex flex-col gap-3">
 										<div className="relative w-full h-40 bg-pattern bg-cover bg-center rounded-lg">
 											<Image
-												src="/hero.png"
+												src={generateCarImgUrl(car)}
 												alt="car model"
 												fill
 												priority
@@ -68,7 +69,7 @@ const CarDetails = ({ isOpen, closeModal, car }: CarDetailsProps) => {
 										<div className="flex gap-3">
 											<div className="flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg">
 												<Image
-													src="/hero.png"
+													src={generateCarImgUrl(car, "29")}
 													alt="car model"
 													fill
 													priority
@@ -77,7 +78,8 @@ const CarDetails = ({ isOpen, closeModal, car }: CarDetailsProps) => {
 											</div>
 											<div className="flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg">
 												<Image
-													src="/hero.png"
+													src={generateCarImgUrl(car, "33")}
+													src={generateCarImgUrl(car)}
 													alt="car model"
 													fill
 													priority
@@ -86,7 +88,7 @@ const CarDetails = ({ isOpen, closeModal, car }: CarDetailsProps) => {
 											</div>
 											<div className="flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg">
 												<Image
-													src="/hero.png"
+													src={generateCarImgUrl(car, "13")}
 													alt="car model"
 													fill
 													priority
@@ -107,8 +109,12 @@ const CarDetails = ({ isOpen, closeModal, car }: CarDetailsProps) => {
 													className="flex justify-between gap-5 w-full text-right"
 													key={key}
 												>
-													<h4 className="text-grey capitalize">{key.split('_').join(' ')}</h4>
-													<p className="text-black-100 font-semibold">{value}</p>
+													<h4 className="text-grey capitalize">
+														{key.split("_").join(" ")}
+													</h4>
+													<p className="text-black-100 font-semibold">
+														{value}
+													</p>
 												</div>
 											))}
 										</div>
